@@ -7,7 +7,7 @@ import ffmpeg
 def distortFrames(framesPath, distortedFramesPath, DISTORT_PERCENTAGE, videoSize,nbFrames):
     print('Distorting frames...')
     for i, elem in enumerate(os.listdir(framesPath), start=1):
-        print(f'{i}/{nbFrames}', end="\r")
+        print('frame', i,'to',  nbFrames, end="\r")
         curFramePath = os.path.join(framesPath, elem)
         resFramePath = os.path.join(distortedFramesPath, elem)
         cmd = f"magick {curFramePath}\
