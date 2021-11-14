@@ -1,27 +1,27 @@
 import os, sys, subprocess
-from tkinter import Tk, filedialog as fd
 import cv2
 import ffmpeg
-Tk().withdraw() # makes the tkinter window not show up
-
-# tests if ImageMagick is installed
-if subprocess.getstatusoutput('magick')[0] != 0:
-    raise EnvironmentError('\033[91m' + 'ImageMagick is not installed (https://imagemagick.org/script/download.php)' + '\033[0m')
-
-DISTORT_PERCENTAGE = 60 #default: 60
-SOUND_FILTER_FREQUENCY = 10 #default: 10
-SOUND_FILTER_MODULATION_DEPTH = 1 #default: 1
+from addingSound import addingSound
+from distortFrames import distortFrames
+from createVideo import createVideo
+from yt import yt
 
 
-# define paths
+
+
+DISTORT_PERCENTAGE = 60 
+SOUND_FILTER_FREQUENCY = 10 
+SOUND_FILTER_MODULATION_DEPTH = 1 
+
+
+
 path = os.path.abspath(os.path.join(sys.argv[0], os.pardir))
 resultDirPath = os.path.join(path, 'result')
 
-filetypes = [('video', '*.mp4 *.avi *.mov *.wmv *.flv')]
-videoPath = fd.askopenfilename(filetypes=filetypes) # choose input video
-print(videoPath)
-if videoPath == '': #canceled
-    exit()
+
+videoPath = './video.mp4'
+
+
 
 videoName = os.path.basename(videoPath)
 framesPath = os.path.join(resultDirPath, 'frames')
@@ -51,7 +51,7 @@ for elem in os.listdir(distortedFramesPath):
 print('Converting video into frames...')
 frameNr = 0
 while True:
-    print(f'{frameNr}/{nbFrames}', end='\r')
+    print(frameNr, 'to ', nbFrames, end="\r")
     success, frame = capture.read()
 
     if not success:
@@ -64,54 +64,10 @@ while True:
 capture.release()
 
 
-# distortion of frames
-print('Distorting frames...')
-for i, elem in enumerate(os.listdir(framesPath), start=1):
-    print(f'{i}/{nbFrames}', end="\r")
-    curFramePath = os.path.join(framesPath, elem)
-    resFramePath = os.path.join(distortedFramesPath, elem)
-    cmd = f"magick {curFramePath}\
-        -liquid-rescale {100-DISTORT_PERCENTAGE}x{100-DISTORT_PERCENTAGE}%!\
-        -resize {videoSize[0]}x{videoSize[1]}\! {resFramePath}"
-    exitCode, cmdOutput = subprocess.getstatusoutput(cmd)
-
-    if exitCode != 0:
-        raise os.error( '\033[91m' + f'Error while distorting frame {i}/{nbFrames}:' + '\n'
-                        + cmdOutput + '\033[0m')
-
-
-# Assembling frames back into a video
-print('Creating video...')
-img_array = [cv2.imread(os.path.join(distortedFramesPath, elem)) for elem in sorted(os.listdir(distortedFramesPath))]
-distortedVideoPath = os.path.join(resultDirPath, 'distorted_'+videoName)
-out = cv2.VideoWriter(distortedVideoPath, cv2.VideoWriter_fourcc(*'mp4v'), fps, videoSize)
-
-for i in range(len(img_array)):
-    print(f'{i}/{nbFrames}', end="\r")
-    out.write(img_array[i])
-out.release()
-
-
-# add distorted sound
-print("Adding distorted sound...")
-video = ffmpeg.input(distortedVideoPath).video
-audio = ffmpeg.input(videoPath).audio.filter(
-    "vibrato",
-    f=SOUND_FILTER_FREQUENCY,
-    d=SOUND_FILTER_MODULATION_DEPTH
-    # Documentation : https://ffmpeg.org/ffmpeg-filters.html#vibrato
-)
-resultVideoPath = os.path.join(resultDirPath, 'result_'+videoName)
-(
-    ffmpeg
-    .concat(video, audio, v=1, a=1) # v = video stream, a = audio stream
-    .output(resultVideoPath)
-    .run(overwrite_output=True)
-    # Documentation : https://kkroening.github.io/ffmpeg-python/
-)
-
-# delete the distorted video with no sound
+distortFrames(framesPath, distortedFramesPath, DISTORT_PERCENTAGE, videoSize,nbFrames)
+distortedVideoPath = os.path.join(resultDirPath, 'distorted_'+videoName) 
+createVideo(distortedFramesPath,resultDirPath, videoName,fps, videoSize, nbFrames)
+addingSound(distortedVideoPath, videoPath, SOUND_FILTER_FREQUENCY, SOUND_FILTER_MODULATION_DEPTH, resultDirPath, videoName)
 os.remove(distortedVideoPath)
 
-
-print('\033[92m' + "--- DONE ! ---" + '\033[0m')
+print('Completed!!!')
