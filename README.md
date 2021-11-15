@@ -1,7 +1,3 @@
-# bruh
-test
-
-
 # Original one
 ![](https://user-images.githubusercontent.com/33205097/141673103-28904d70-fa46-4d33-bf07-f86dcbcf0262.mp4)
 
