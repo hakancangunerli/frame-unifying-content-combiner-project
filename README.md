@@ -18,6 +18,6 @@ So, this script also does that. The video can be downloaded using the script yt.
 ![](https://user-images.githubusercontent.com/33205097/141673103-28904d70-fa46-4d33-bf07-f86dcbcf0262.mp4)
 
 
-### these are also videos, so you can play the sound for the test. If you can't click on them, you can simply go to ![my gh-issues here](https://github.com/hakancangunerli/frame-unifying-content-combiner/issues/1) watch them: 
+### these are also videos, so you can play the sound for the test. If you can't click on them, you can simply go to [my gh-issues here](https://github.com/hakancangunerli/frame-unifying-content-combiner/issues/1) watch them. 
 
 
