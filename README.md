@@ -13,6 +13,7 @@ So, this script also does that. The video can be downloaded using the script yt.
 # Original one
 ![](https://user-images.githubusercontent.com/33205097/141673103-28904d70-fa46-4d33-bf07-f86dcbcf0262.mp4)
 
+https://user-images.githubusercontent.com/33205097/158455203-a044a013-4408-45fb-a904-3b05dd689408.mp4
 
 
 
@@ -21,6 +22,5 @@ So, this script also does that. The video can be downloaded using the script yt.
 ![](https://user-images.githubusercontent.com/33205097/141673102-dd10c3f5-b68f-44a9-8b92-b5c8a3774284.mp4)
 
 
-### these are also videos, so you can play the sound for the test. If you can't click on them, you can simply go to [my gh-issues here](https://github.com/hakancangunerli/frame-unifying-content-combiner/issues/1) watch them. 
-
+https://user-images.githubusercontent.com/33205097/158455230-d57894a8-94c3-42d3-8af3-386264b6d6e4.mp4
 
